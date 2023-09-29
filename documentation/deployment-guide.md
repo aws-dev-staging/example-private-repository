@@ -83,6 +83,7 @@ CloudFormation prepopulates stack parameters with the default values provided in
 # Provide your own parameter values for CloudFormation stack and CodePipeline pipeline names
 export STACK_NAME=<YOUR-STACK-NAME>
 export CODEPIPELINE_NAME=<YOUR-CODEPIPELINE-NAME>
+export SNS_EMAIL=<YOUR-EMAIL>
 
 # Below parameter values acquired from 'Gather Third-Party Repository Configuration Settings' and 'Create GitHub Personal Access Token' pre-deployment
 export PRIVATE_GITHUB_PAT=<YOUR-GITHUB-PAT>
