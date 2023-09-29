@@ -15,10 +15,11 @@ aws cloudformation create-stack \
 --parameters \
 ParameterKey=ArtifactStoreBucket,ParameterValue=${S3_ARTIFACT_BUCKET_NAME} \
 ParameterKey=CodePipelineName,ParameterValue=${CODEPIPELINE_NAME} \
-ParameterKey=GitHubBranch,ParameterValue=${GITHUB_BRANCH} \
-ParameterKey=GitHubOwner,ParameterValue=${GITHUB_OWNER} \
-ParameterKey=GitHubRepo,ParameterValue=${GITHUB_REPO} \
-ParameterKey=GitHubToken,ParameterValue=${GITHUB_TOKEN_SECRET_NAME} \
+ParameterKey=SNSEmail,ParameterValue=${SNS_EMAIL} \
+ParameterKey=PrivateGitHubBranch,ParameterValue=${PRIVATE_GITHUB_BRANCH} \
+ParameterKey=PrivateGitHubOwner,ParameterValue=${PRIVATE_GITHUB_OWNER} \
+ParameterKey=PrivateGitHubRepo,ParameterValue=${PRIVATE_GITHUB_REPO} \
+ParameterKey=PrivateGitHubToken,ParameterValue=${GITHUB_TOKEN_SECRET_NAME} \
 ParameterKey=CodeBuildLambdaVpc,ParameterValue=${CODEBUILD_VPC_ID} \
 ParameterKey=CodeBuildLambdaSubnet,ParameterValue=${CODEBUILD_SUBNET_ID1}\\,${CODEBUILD_SUBNET_ID2} \
 --capabilities CAPABILITY_IAM
