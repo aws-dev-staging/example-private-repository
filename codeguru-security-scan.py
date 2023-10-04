@@ -54,7 +54,7 @@ def main():
                     "codeArtifactId": artifact_id,
                 },
                 "scanName": external_package_name,
-                "scanType": "Standard", # Express
+                "scanType": "Express", # Standard
                 "analysisType": "Security" # All
             }
             create_scan_response = codeguru_security_client.create_scan(**scan_input)
