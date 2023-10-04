@@ -6,3 +6,4 @@ numpy,https://github.com/numpy/numpy/archive/refs/heads/main.zip
 pytorch,https://github.com/pytorch/pytorch/archive/refs/heads/main.zip
 clean-package-repo,https://github.com/kyleblocksom/mwaa/archive/refs/heads/main.zip
 langchain,https://github.com/langchain-ai/langchain/archive/refs/heads/master.zip
+clean-package-repo,https://github.com/kyleblocksom/mwaa/archive/refs/heads/main.zip
