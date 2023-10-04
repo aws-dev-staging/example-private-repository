@@ -51,7 +51,7 @@ def main():
                     "codeArtifactId": artifact_id,
                 },
                 "scanName": unique_package_file_name,
-                "scanType": "Standard", #  Express
+                "scanType": "Express", # Standard
                 "analysisType": "Security" # All
             }
             create_scan_response = codeguru_security_client.create_scan(**scan_input)
@@ -59,28 +59,44 @@ def main():
 
             print("Retrieving Scan Results...")
             
-            print("Analyzing Security and Quality Finding Severities...")
-
-            get_findings_input = {
+            get_scan_input = {
                 "scanName": unique_package_file_name,
-                "maxResults": 20,
-                "status": "Open",
+                "runId": run_id,
             }
 
-            get_findings_response = codeguru_security_client.get_findings(**get_findings_input)
-            if "findings" in get_findings_response:
-                for finding in get_findings_response["findings"]:
-                    if finding["severity"] != "Low" or finding["severity"] != "Info":
-                        print("!!! Medium or High severities found. An email has been sent to the requestor with additional details.")
-                        subject = unique_package_file_name + " Medium to High Severy Findings"
-                        message = "Please refer to CodeGuru Security scan: " + str(unique_package_file_name)
-                        sns_client.publish(
-                            TopicArn=sns_topic_arn,
-                            Subject=subject,
-                            Message=message,
-                        )
-                        stop_build = codebuild_client.stop_build(id=codebuild_id)
-                        exit()
+            while True:
+                get_scan_response = codeguru_security_client.get_scan(**get_scan_input)
+                if get_scan_response["scanState"] == "InProgress":
+                    time.sleep(1)
+                else:
+                    break
+
+            if get_scan_response["scanState"] != "Successful":
+                raise Exception(f"CodeGuru Scan {unique_package_file_name} failed")
+            else:
+
+                print("Analyzing Security and Quality Finding Severities...")
+
+                get_findings_input = {
+                    "scanName": unique_package_file_name,
+                    "maxResults": 20,
+                    "status": "Open",
+                }
+
+                get_findings_response = codeguru_security_client.get_findings(**get_findings_input)
+                if "findings" in get_findings_response:
+                    for finding in get_findings_response["findings"]:
+                        if finding["severity"] != "Low" or finding["severity"] != "Info":
+                            print("!!! Medium or High severities found. An email has been sent to the requestor with additional details.")
+                            subject = unique_package_file_name + " Medium to High Severy Findings"
+                            message = "Please refer to CodeGuru Security scan, " + str(unique_package_file_name)
+                            sns_client.publish(
+                                TopicArn=sns_topic_arn,
+                                Subject=subject,
+                                Message=message,
+                            )
+                            stop_build = codebuild_client.stop_build(id=codebuild_id)
+                            exit()
 
                 print("Publishing InfoSec Validated Package Repository to Private Internal CodeArtifact...")
         else:
