@@ -6,9 +6,6 @@ import requests
 # -- Environment Variables --
 
 # Local Assets
-external_package_file_name = os.environ.get("EXTERNAL_PACKAGE_FILE_NAME")
-file_tuple = os.path.splitext(external_package_file_name)
-external_package_name = file_tuple[0]
 unique_package_file_name = os.environ.get("UNIQUE_PACKAGE_FILE_NAME")
 asset_sha256 = os.environ.get("ASSET_SHA256")
 
@@ -22,7 +19,7 @@ sns_topic_arn = os.environ.get("SNSTopic")
 
 def main():
     try:
-        print("Initiating Security Scan for External Package Repository: " + external_package_name)
+        print("Initiating Security Scan for External Package Repository: " + unique_package_file_name)
 
         # Instantiate boto3 clients
         codeguru_security_client = boto3.client('codeguru-security')
@@ -32,7 +29,7 @@ def main():
 
         print("Creating CodeGuru Security Upload URL...")
 
-        create_url_input = {"scanName": external_package_name}
+        create_url_input = {"scanName": unique_package_file_name}
         create_url_response = codeguru_security_client.create_upload_url(**create_url_input)
         url = create_url_response["s3Url"]
         artifact_id = create_url_response["codeArtifactId"]
@@ -53,7 +50,7 @@ def main():
                 "resourceId": {
                     "codeArtifactId": artifact_id,
                 },
-                "scanName": external_package_name,
+                "scanName": unique_package_file_name,
                 "scanType": "Express", # Standard
                 "analysisType": "Security" # All
             }
@@ -63,7 +60,7 @@ def main():
             print("Retrieving Scan Results...")
             
             get_scan_input = {
-                "scanName": external_package_name,
+                "scanName": unique_package_file_name,
                 "runId": run_id,
             }
 
@@ -75,13 +72,13 @@ def main():
                     break
 
             if get_scan_response["scanState"] != "Successful":
-                raise Exception(f"CodeGuru Scan {external_package_name} failed")
+                raise Exception(f"CodeGuru Scan {unique_package_file_name} failed")
             else:
 
                 print("Analyzing Security and Quality Finding Severities...")
 
                 get_findings_input = {
-                    "scanName": external_package_name,
+                    "scanName": unique_package_file_name,
                     "maxResults": 20,
                     "status": "Open",
                 }
@@ -91,7 +88,7 @@ def main():
                     for finding in get_findings_response["findings"]:
                         if finding["severity"] != "Low" or finding["severity"] != "Info":
                             print("!!! Medium or High severities found. An email has been sent to the requestor with additional details.")
-                            subject = external_package_name + " Medium to High Severy Findings"
+                            subject = unique_package_file_name + " Medium to High Severy Findings"
                             sns_client.publish(
                                 TopicArn=sns_topic_arn,
                                 Subject=subject,
