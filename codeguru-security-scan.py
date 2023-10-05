@@ -79,7 +79,7 @@ def main():
                     if "findings" in get_findings_response:
                         for finding in get_findings_response["findings"]:
                             if finding["severity"] != "Low" or finding["severity"] != "Info":
-                                print("!!! Medium or High severities found. An email has been sent to the requestor with additional details.")
+                                print("(!!!) Medium or High severities found. An email has been sent to the requestor with additional details.")
                                 subject = unique_package_file_name + " Medium to High Severy Findings"
                                 message = "Please refer to CodeGuru Security scan, " + str(unique_package_file_name)
                                 sns_client.publish(
@@ -87,6 +87,7 @@ def main():
                                     Subject=subject,
                                     Message=message,
                                 )
+                                print("---STOPPING BUILD---")
                                 stop_build = codebuild_client.stop_build(id=codebuild_id)
                                 exit()
                 else:
