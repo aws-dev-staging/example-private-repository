@@ -14,8 +14,7 @@ codeartifact_domain = os.environ.get("ExampleDomain")
 codeartifact_repo = os.environ.get("InternalRepository")
 
 # Pipeline Exit and Notification
-codepipeline_id = os.environ.get("CODEPIPELINE_ID")
-codepipeline_name = os.environ.get("CODEPIPELINE_NAME")
+codebuild_id = os.environ.get("CODEBUILD_BUILD_ID")
 sns_topic_arn = os.environ.get("SNSTopic")
 
 def main():
@@ -26,8 +25,7 @@ def main():
         codeguru_security_client = boto3.client('codeguru-security')
         codeartifact_client = boto3.client('codeartifact')
         sns_client = boto3.client('sns')
-        codepipeline_client = boto3.client('codepipeline')
-        #codebuild_client = boto3.client('codebuild')
+        codebuild_client = boto3.client('codebuild')
 
         print("Creating CodeGuru Security Upload URL...")
 
@@ -89,16 +87,8 @@ def main():
                                     Subject=subject,
                                     Message=message,
                                 )
-
-                                stop_pipeline_input = {
-                                   "abandon": True,
-                                   "pipelineExecutionId": codepipeline_id,
-                                   "pipelineName": codepipeline_name,
-                                   "reason": subject,
-                                }
-                                print("---STOPPING PIPELINE EXECUTION---")
-                                codepipeline_client.stop_pipeline_execution(**stop_pipeline_input)
-                                #stop_build = codebuild_client.stop_build(id=codebuild_id)
+                                print("---STOPPING BUILD---")
+                                stop_build = codebuild_client.stop_build(id=codebuild_id)
                                 exit()
                 else:
                     break
