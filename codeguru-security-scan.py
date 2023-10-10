@@ -117,7 +117,7 @@ def main():
                 unfinished=True
             )
 
-                print("CodeArtifact response = " + codeartifact_response)
+            print("CodeArtifact response = " + codeartifact_response)
         else:
             raise Exception(f"Source failed to upload external package to CodeGuru Security with status {upload_response.status_code}")
     except Exception as error:
