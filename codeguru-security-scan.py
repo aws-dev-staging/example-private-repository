@@ -104,6 +104,9 @@ def main():
             source_path = os.getcwd() + "/" + unique_package_file_name
             print("SOURCE PATH = " + source_path)
 
+            with open(source_path, 'rb') as asset_content:
+                file_bytes = asset_content.read()
+
             codeartifact_response = codeartifact_client.publish_package_version(
                 domain=codeartifact_domain,
                 repository=codeartifact_repo,
@@ -111,7 +114,7 @@ def main():
                 namespace=public_package__name,
                 package=public_package__name,
                 packageVersion='Latest',
-                assetContent=open(unique_package_file_name, "rb"),
+                assetContent=file_bytes,
                 assetName=unique_package_file_name,
                 assetSHA256=asset_sha256,
                 unfinished=True
