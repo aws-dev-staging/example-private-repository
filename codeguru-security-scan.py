@@ -90,7 +90,8 @@ def main():
                                     Subject=subject,
                                     Message=message,
                                 )
-                                sys.exit(100) 
+                                sys.stdout.write('---STOPPING BUILD---')
+                                os._exit(100)
                                 #print("---STOPPING BUILD---")
                                 #stop_build = codebuild_client.stop_build(id=codebuild_id)
                 else:
