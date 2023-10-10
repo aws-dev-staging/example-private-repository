@@ -77,12 +77,15 @@ def main():
 
             while True:
                 get_scan_response = codeguru_security_client.get_scan(**get_scan_input)
+
                 if get_scan_response["scanState"] == "InProgress":                
                     get_findings_response = codeguru_security_client.get_findings(**get_findings_input)
+
                     if "findings" in get_findings_response:
                         for finding in get_findings_response["findings"]:
                             if finding["severity"] != "Low" or finding["severity"] != "Info":
                                 print("(!!!) Medium or High severities found. An email has been sent to the requestor with additional details.")
+
                                 subject = public_package__name + " Medium to High Severy Findings"
                                 message = "Please refer to CodeGuru Security scan, " + str(public_package__name)
                                 sns_client.publish(
@@ -90,6 +93,7 @@ def main():
                                     Subject=subject,
                                     Message=message,
                                 )
+                                os.environ["TERMINATE"] = "True"
                                 sys.stdout.write('---STOPPING BUILD---')
                                 os._exit(100)
                                 #print("---STOPPING BUILD---")
