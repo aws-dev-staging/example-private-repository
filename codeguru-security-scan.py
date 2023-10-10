@@ -7,7 +7,7 @@ import requests
 # -- Environment Variables --
 
 # Local Assets
-# unique_package_file_name = os.environ.get("UNIQUE_PACKAGE_FILE_NAME")
+unique_package_file_name = os.environ.get("UNIQUE_PACKAGE_FILE_NAME")
 public_package_file_name = os.environ.get("EXTERNAL_PACKAGE_FILE_NAME")
 public_package__name = os.environ.get("EXTERNAL_PACKAGE_NAME")
 asset_sha256 = os.environ.get("ASSET_SHA256")
@@ -75,7 +75,8 @@ def main():
                 "status": "Open",
             }
 
-            while True:
+            continue_scan = True
+            while continue_scan:
                 get_scan_response = codeguru_security_client.get_scan(**get_scan_input)
 
                 if get_scan_response["scanState"] == "InProgress":                
@@ -93,11 +94,9 @@ def main():
                                     Subject=subject,
                                     Message=message,
                                 )
-                                print("WORKING DIRECTORY = " + os.getcwd())
-                                os.environ["TERMINATE"] = "True"
-                                sys.stdout.write('---STOPPING BUILD---')
-                                sys.exit()
-                                #print("---STOPPING BUILD---")
+                                print("---STOPPING BUILD---")
+                                continue_scan = False
+                                break
                                 #stop_build = codebuild_client.stop_build(id=codebuild_id)
                 else:
                     break
@@ -106,22 +105,22 @@ def main():
                 raise Exception(f"CodeGuru Scan {public_package__name} failed")
             else:
                 print("Publishing InfoSec Validated Package Repository to Private Internal CodeArtifact...")
+                source_directory = os.getcwd()
 
-                repository_name = 'your-repository-name'
-                package_name = 'your-package-name'
-                package_version = '1.0.0'
-                source_directory = '/path/to/package/source'
-
-                response = client.publish_package_version(
-                    domain='your-domain',
-                    domainOwner='your-domain-owner-id',
-                    repository=repository_name,
-                    format='pypi',
-                    namespace=package_name,
-                    package=package_name,
-                    version=package_version,
-                    source=source_directory
+                codeartifact_response = client.publish_package_version(
+                    domain=codeartifact_domain,
+                    repository=codeartifact_repo,
+                    format='generic',
+                    namespace=public_package__name,
+                    package=public_package__name,
+                    packageVersion='Latest',
+                    assetContent=unique_package_file_name,
+                    assetName=unique_package_file_name,
+                    assetSHA256=asset_sha256,
+                    unfinished=True
                 )
+
+                print("CodeArtifact response = " + codeartifact_response)
         else:
             raise Exception(f"Source failed to upload external package to CodeGuru Security with status {upload_response.status_code}")
     except Exception as error:
