@@ -1,4 +1,5 @@
 import os
+import sys
 import time
 import boto3
 import requests
@@ -89,9 +90,9 @@ def main():
                                     Subject=subject,
                                     Message=message,
                                 )
-                                print("---STOPPING BUILD---")
-                                stop_build = codebuild_client.stop_build(id=codebuild_id)
-                                exit()
+                                sys.exit(100) 
+                                #print("---STOPPING BUILD---")
+                                #stop_build = codebuild_client.stop_build(id=codebuild_id)
                 else:
                     break
 
