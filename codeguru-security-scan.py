@@ -95,14 +95,12 @@ def main():
                                     Message=message,
                                 )
                                 continue_scan = False
-                                #stop_build = codebuild_client.stop_build(id=codebuild_id)
                                 sys.exit()
                 else:
                     break
 
             print("Publishing InfoSec Validated Package Repository to Private Internal CodeArtifact...")
             source_path = os.getcwd() + "/" + unique_package_file_name
-            print("SOURCE PATH = " + source_path)
 
             with open(source_path, 'rb') as asset_content:
                 file_bytes = asset_content.read()
