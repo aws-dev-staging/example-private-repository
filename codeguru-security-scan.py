@@ -85,7 +85,7 @@ def main():
                     if "findings" in get_findings_response:
                         for finding in get_findings_response["findings"]:
                             if finding["severity"] != "Low" or finding["severity"] != "Info":
-                                print("(!!!) Medium or High severities found. An email has been sent to the requestor with additional details.")
+                                print("!! -- Amazon CodeGuru Security: Medium or High severities found. An email has been sent to the requestor with additional details. -- !!")
 
                                 subject = public_package__name + " Medium to High Severy Findings"
                                 message = "Please refer to Amazon CodeGuru Security scan: " + str(public_package__name)
@@ -94,7 +94,6 @@ def main():
                                     Subject=subject,
                                     Message=message,
                                 )
-                                print("---STOPPING BUILD---")
                                 continue_scan = False
                                 #stop_build = codebuild_client.stop_build(id=codebuild_id)
                                 sys.exit()
@@ -104,7 +103,7 @@ def main():
             print("Publishing InfoSec Validated Package Repository to Private Internal CodeArtifact...")
             source_directory = os.getcwd()
 
-            codeartifact_response = client.publish_package_version(
+            codeartifact_response = codeartifact_client.publish_package_version(
                 domain=codeartifact_domain,
                 repository=codeartifact_repo,
                 format='generic',
