@@ -85,7 +85,7 @@ def main():
                     if "findings" in get_findings_response:
                         for finding in get_findings_response["findings"]:
                             if finding["severity"] != "Low" or finding["severity"] != "Info":
-                                print("!! -- Amazon CodeGuru Security: Medium or High severities found. An email has been sent to the requestor with additional details. -- !!")
+                                print("!!! ================ !!!\nAmazon CodeGuru Security: Medium or High severities found.\nAn email has been sent to the requestor with additional details. !!")
 
                                 subject = public_package__name + " Medium to High Severy Findings"
                                 message = "Please refer to Amazon CodeGuru Security scan: " + str(public_package__name)
@@ -101,7 +101,8 @@ def main():
                     break
 
             print("Publishing InfoSec Validated Package Repository to Private Internal CodeArtifact...")
-            source_directory = os.getcwd()
+            source_path = os.getcwd() + "/" + unique_package_file_name
+            print("SOURCE PATH = " + source_path)
 
             codeartifact_response = codeartifact_client.publish_package_version(
                 domain=codeartifact_domain,
@@ -110,7 +111,7 @@ def main():
                 namespace=public_package__name,
                 package=public_package__name,
                 packageVersion='Latest',
-                assetContent=unique_package_file_name,
+                assetContent=source_path,
                 assetName=unique_package_file_name,
                 assetSHA256=asset_sha256,
                 unfinished=True
