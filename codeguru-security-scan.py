@@ -107,8 +107,6 @@ def main():
             with open(source_path, 'rb') as asset_content:
                 file_bytes = asset_content.read()
 
-            print("FILE TYPE = " + str(type(file_bytes)) + "\nSTRING = " + str(file_bytes))
-
             codeartifact_response = codeartifact_client.publish_package_version(
                 domain=codeartifact_domain,
                 repository=codeartifact_repo,
@@ -122,7 +120,7 @@ def main():
                 unfinished=True
             )
 
-            print("CodeArtifact response = " + codeartifact_response)
+            print("CodeArtifact response = " + str(codeartifact_response))
             subject = "InfoSec Approved " + public_package__name
             message = "Please refer to Amazon CodeArtifact private package: " + str(public_package__name)
             sns_client.publish(
