@@ -96,29 +96,26 @@ def main():
                                 )
                                 print("---STOPPING BUILD---")
                                 continue_scan = False
-                                break
                                 #stop_build = codebuild_client.stop_build(id=codebuild_id)
+                                sys.exit()
                 else:
                     break
 
-            if get_scan_response["scanState"] != "Successful":
-                raise Exception(f"CodeGuru Scan {public_package__name} failed")
-            else:
-                print("Publishing InfoSec Validated Package Repository to Private Internal CodeArtifact...")
-                source_directory = os.getcwd()
+            print("Publishing InfoSec Validated Package Repository to Private Internal CodeArtifact...")
+            source_directory = os.getcwd()
 
-                codeartifact_response = client.publish_package_version(
-                    domain=codeartifact_domain,
-                    repository=codeartifact_repo,
-                    format='generic',
-                    namespace=public_package__name,
-                    package=public_package__name,
-                    packageVersion='Latest',
-                    assetContent=unique_package_file_name,
-                    assetName=unique_package_file_name,
-                    assetSHA256=asset_sha256,
-                    unfinished=True
-                )
+            codeartifact_response = client.publish_package_version(
+                domain=codeartifact_domain,
+                repository=codeartifact_repo,
+                format='generic',
+                namespace=public_package__name,
+                package=public_package__name,
+                packageVersion='Latest',
+                assetContent=unique_package_file_name,
+                assetName=unique_package_file_name,
+                assetSHA256=asset_sha256,
+                unfinished=True
+            )
 
                 print("CodeArtifact response = " + codeartifact_response)
         else:
