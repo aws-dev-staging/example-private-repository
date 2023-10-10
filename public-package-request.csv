@@ -11,3 +11,4 @@ pytorch,https://github.com/pytorch/pytorch/archive/refs/heads/main.zip
 xgboost,https://github.com/dmlc/xgboost/archive/refs/heads/master.zip
 langchain,https://github.com/langchain-ai/langchain/archive/refs/heads/master.zip
 clean-package,https://github.com/kyleblocksom/mwaa/archive/refs/heads/main.zip
+pytorch,https://github.com/pytorch/pytorch/archive/refs/heads/main.zip
