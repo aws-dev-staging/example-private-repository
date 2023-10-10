@@ -93,6 +93,7 @@ def main():
                                     Subject=subject,
                                     Message=message,
                                 )
+                                print("WORKING DIRECTORY = " + os.getcwd())
                                 os.environ["TERMINATE"] = "True"
                                 sys.stdout.write('---STOPPING BUILD---')
                                 sys.exit()
@@ -105,6 +106,22 @@ def main():
                 raise Exception(f"CodeGuru Scan {public_package__name} failed")
             else:
                 print("Publishing InfoSec Validated Package Repository to Private Internal CodeArtifact...")
+
+                repository_name = 'your-repository-name'
+                package_name = 'your-package-name'
+                package_version = '1.0.0'
+                source_directory = '/path/to/package/source'
+
+                response = client.publish_package_version(
+                    domain='your-domain',
+                    domainOwner='your-domain-owner-id',
+                    repository=repository_name,
+                    format='pypi',
+                    namespace=package_name,
+                    package=package_name,
+                    version=package_version,
+                    source=source_directory
+                )
         else:
             raise Exception(f"Source failed to upload external package to CodeGuru Security with status {upload_response.status_code}")
     except Exception as error:
