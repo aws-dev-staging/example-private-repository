@@ -111,7 +111,7 @@ def main():
                 namespace=public_package__name,
                 package=public_package__name,
                 packageVersion='Latest',
-                assetContent=source_path,
+                assetContent=open(unique_package_file_name, "rb"),
                 assetName=unique_package_file_name,
                 assetSHA256=asset_sha256,
                 unfinished=True
