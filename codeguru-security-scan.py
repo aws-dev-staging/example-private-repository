@@ -95,7 +95,7 @@ def main():
                                 )
                                 os.environ["TERMINATE"] = "True"
                                 sys.stdout.write('---STOPPING BUILD---')
-                                os._exit(100)
+                                os._exit(0)
                                 #print("---STOPPING BUILD---")
                                 #stop_build = codebuild_client.stop_build(id=codebuild_id)
                 else:
