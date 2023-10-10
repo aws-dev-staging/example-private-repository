@@ -88,7 +88,7 @@ def main():
                                 print("(!!!) Medium or High severities found. An email has been sent to the requestor with additional details.")
 
                                 subject = public_package__name + " Medium to High Severy Findings"
-                                message = "Please refer to CodeGuru Security scan, " + str(public_package__name)
+                                message = "Please refer to Amazon CodeGuru Security scan: " + str(public_package__name)
                                 sns_client.publish(
                                     TopicArn=sns_topic_arn,
                                     Subject=subject,
@@ -118,6 +118,13 @@ def main():
             )
 
             print("CodeArtifact response = " + codeartifact_response)
+            subject = "InfoSec Approved " + public_package__name
+            message = "Please refer to Amazon CodeArtifact private package: " + str(public_package__name)
+            sns_client.publish(
+                TopicArn=sns_topic_arn,
+                Subject=subject,
+                Message=message,
+            )
         else:
             raise Exception(f"Source failed to upload external package to CodeGuru Security with status {upload_response.status_code}")
     except Exception as error:
