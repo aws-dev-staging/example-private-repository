@@ -4,3 +4,4 @@ pytorch,https://github.com/pytorch/pytorch/archive/refs/heads/main.zip
 xgboost,https://github.com/dmlc/xgboost/archive/refs/heads/master.zip
 numpy,https://github.com/numpy/numpy/archive/refs/heads/main.zip
 clean-package,https://github.com/kyleblocksom/clean-package.git
+langchain,https://github.com/langchain-ai/langchain/archive/refs/heads/master.zip
