@@ -85,7 +85,7 @@ def main():
                     if "findings" in get_findings_response:
                         for finding in get_findings_response["findings"]:
                             if finding["severity"] != "Low" or finding["severity"] != "Info":
-                                print("!!! ================ !!!\nAmazon CodeGuru Security: Medium or High severities found.\nAn email has been sent to the requestor with additional details. !!")
+                                print("!== Amazon CodeGuru Security: Medium or High severities found. An email has been sent to the requestor with additional details. ==!")
 
                                 subject = public_package__name + " Medium to High Severy Findings"
                                 message = "Please refer to Amazon CodeGuru Security scan: " + str(public_package__name)
