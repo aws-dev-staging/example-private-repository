@@ -2,3 +2,7 @@
 langchain,https://github.com/langchain-ai/langchain/archive/refs/heads/master.zip
 pytorch,https://github.com/pytorch/pytorch/archive/refs/heads/main.zip
 numpy,https://github.com/numpy/numpy/archive/refs/heads/main.zip
+<<<<<<< HEAD
+=======
+xgboost,https://github.com/dmlc/xgboost/archive/refs/heads/master.zip
+>>>>>>> adbc47e (Add XGBoost)
