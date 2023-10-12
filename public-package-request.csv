@@ -2,3 +2,4 @@
 langchain,https://github.com/langchain-ai/langchain/archive/refs/heads/master.zip
 pytorch,https://github.com/pytorch/pytorch/archive/refs/heads/main.zip
 numpy,https://github.com/numpy/numpy/archive/refs/heads/main.zip
+clean-package,https://github.com/kyleblocksom/clean-package/archive/refs/heads/main.zip
